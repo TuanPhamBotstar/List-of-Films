@@ -1,0 +1,36 @@
+.heading  h3{
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+.navControl{
+    display: flex;
+    justify-content: space-around;
+}
+.boxsearch{
+    display: flex;
+    flex-flow: row nowrap;
+    position: relative;
+    align-items: center;
+    flex-basis: 60%;
+}   
+.boxsearch i{
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+}
+i{
+    cursor: pointer;
+}
+tbody tr td span.highLight{
+    background-color: yellow;
+}
+.paginationContainer{
+    height: 450px;
+    position: relative;
+}
+.pagination{
+    position: absolute;
+    bottom: 0px;
+    right: 20px;
+}

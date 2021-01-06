@@ -1,0 +1,110 @@
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    
+    <div class="panel panel-primary">
+          <div class="panel-heading">
+                <h3 class="panel-title">Reactive Forms</h3>
+          </div>
+          <div class="panel-body">
+                <form [formGroup]="frmUser"
+                      autocomplete="true"
+                      novalidate="true"
+                      (ngSubmit)="onSubmitForm()"
+                    >
+                      
+                    <div class="form-group">
+                        <label for="">User Name</label>
+                        <input 
+                            type="text" 
+                            class="form-control"    
+                            name="txtUsername"
+                            formControlName="username"
+                        >
+                        <span 
+                            class="label label-danger"
+                            *ngIf="frmUser.controls.username.dirty &&
+                            frmUser.controls.username.errors?.partten">
+                            Link is required !
+                        </span>
+                       <!-- <app-error-validate
+                            [control]="frmUser.controls.username" 
+                       >
+                       </app-error-validate> -->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Password</label>
+                        <input 
+                            type="password" 
+                            class="form-control" 
+                            name="txtPassword"
+                            formControlName="password"
+                        >
+
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="">Full Name</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            name="txtFullname"
+                            formControlName="fullname"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Email</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            name="txtEmail"
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                            formControlName="email"
+                        >
+                        <span 
+                            class="label label-danger"
+                            *ngIf="frmUser.controls.email.dirty &&
+                            frmUser.controls.email.errors?.pattern"
+                            >
+                            Email invalid !
+                        </span>
+                        
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Phone</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            name="txtPhone"
+                            formControlName="phone"
+                        >
+                        <span 
+                            class="label label-danger"
+                            *ngIf="frmUser.controls.phone.dirty &&
+                            frmUser.controls.phone.errors?.pattern"
+                            >
+                            Email invalid !
+                        </span>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="btn btn-primary"
+                            [disabled]="frmUser.invalid"
+                            >
+                            Save
+                    </button>
+                    <button type="button" 
+                            class="btn btn-primary"
+                            (click)="onResetForm()"
+                        >
+                        Reset
+                    </button>
+                </form>
+                
+          </div>
+    </div>
+          
+</div>
+

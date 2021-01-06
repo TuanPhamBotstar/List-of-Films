@@ -1,0 +1,84 @@
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+          <h3 class="panel-title">Add Film</h3>
+          <span class="close">
+            <a [routerLink]="['/']">
+                <i class="fa fa-times" aria-hidden="true" ></i>
+            </a>
+          </span>
+    </div>
+    <div class="panel-body">
+      <!-- (click)='addFilm(movies.length,name.value,link.value,author.value)' -->
+          <form [formGroup]="frmFilm"
+                
+                novalidate="true"
+                (ngSubmit)="onSubmitForm(movies.length,name.value,link.value,author.value)"
+          >
+                  <div class="form-group">
+                      <label for="">Name Film</label>
+                      <input 
+                      type="text" 
+                      class="form-control" 
+                      formControlName="name"
+                      #name
+                      > 
+                      <span 
+                        class="label label-danger"
+                        *ngIf="frmFilm.controls.name.dirty &&
+                        frmFilm.controls.name.errors?.required">
+                        Film name is required !
+                      </span>
+                  </div>
+                  <div class="form-group">
+                      <label for="">Link</label>
+                      <input 
+                      type="text" 
+                      class="form-control" 
+                      #link
+                      formControlName="link" 
+                      > 
+                      <span 
+                        class="label label-danger"
+                        *ngIf="frmFilm.controls.link.dirty &&
+                        frmFilm.controls.link.errors?.required">
+                        Link is required !
+                      </span>
+                  </div>
+                  <div class="form-group">
+                      <label for="">Author</label>
+                      <input 
+                      type="text" 
+                      class="form-control" 
+                      formControlName="author"
+                      #author
+                    > 
+                    <span 
+                        class="label label-danger"
+                        *ngIf="frmFilm.controls.author.dirty &&
+                        frmFilm.controls.author.errors?.required">
+                        Author is required !
+                    </span>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-sm-12 col-sm-offset-2">
+                            <button 
+                            type="submit" 
+                            class="btn btn-lg btn-primary" 
+                            
+                            [disabled]="frmFilm.invalid"
+                            >
+                                Add
+                            </button>
+                            <button 
+                            type="button" 
+                            class="btn btn-lg btn-primary" 
+                            (click)='onReset()'
+                            [style.margin-left.px]="10">
+                            Reset
+                            </button>
+                      </div>
+                  </div>
+          </form>
+    </div>
+</div>

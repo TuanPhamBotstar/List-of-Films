@@ -1,0 +1,16 @@
+.hide{
+    display: none;
+}
+.panel-heading{
+    position: relative;
+}
+.panel-heading .close{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+.panel-heading .close i{
+    color: #ffffff;
+    font-size: 25px;
+    opacity: 1;
+}
