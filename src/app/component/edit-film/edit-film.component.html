@@ -8,8 +8,8 @@
                 </a>
             </span>
       </div>
-      <div class="panel-body" *ngIf="movie">
-            
+      <div class="panel-body" *ngIf="movie; else notMoive" >
+           
             <form [formGroup]="frmFilm"
                   autocomplete="true"
                   novalidate="true"
@@ -43,6 +43,7 @@
                             frmFilm.controls.link.errors?.required">
                             Link is required !
                         </span>
+                        <!-- <app-error-validate [control] = "frmFilm.controls.link"></app-error-validate> -->
                     </div>
                     <div class="form-group">
                         <label for="">Author</label>
@@ -79,4 +80,9 @@
                     </div>
             </form>
       </div>
+      <ng-template #notMoive>
+        <div class="panel-body" >
+        Not Movie with id = {{_id}}
+        </div>
+      </ng-template>
 </div>

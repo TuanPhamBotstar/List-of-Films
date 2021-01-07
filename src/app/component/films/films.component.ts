@@ -34,6 +34,7 @@ export class FilmsComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
   ) { }
   ngOnInit(): void {
+    
     this.moviesService.ngLoadMovie();
     this.moviesService.ngGetMovies()
       .subscribe(data => {
@@ -42,7 +43,11 @@ export class FilmsComponent implements OnInit {
           1 + (this.movies.length - this.movies.length % 5) / 5;
       });
     this.activatedRoute.queryParams
-      .subscribe(data => { console.log(data.page); this.no = data.page ? data.page : this.no; console.log(this.no) });
+      .subscribe(data => { 
+        console.log(data.page); 
+        this.no = data.page ? data.page : this.no; console.log(this.no) 
+      });
+      
   }
 
   //search and highlight match character
@@ -57,7 +62,7 @@ export class FilmsComponent implements OnInit {
           name.slice(idx, idx + filter.length), `<strong>${name.slice(idx, idx + filter.length)}</strong>`);
         console.log(this.txthl);
         movie.show = true;
-        console.log(movie.hl)
+        // console.log(movie.hl)
         movie.hl = true;
       }
       else if (value == '') {

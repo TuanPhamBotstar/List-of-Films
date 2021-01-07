@@ -30,7 +30,7 @@ export class EditFilmComponent implements OnInit, OnDestroy {
   constructor(
     public moviesService: LogingService,
     private store: Store<AppState>,
-    private formBuilder: FormBuilder,
+    private formBuilder: FormBuilder, 
     public activateRouter: ActivatedRoute,
     public routeService: Router
   ) {
@@ -45,13 +45,13 @@ export class EditFilmComponent implements OnInit, OnDestroy {
     console.log(this._id)
     this.activateRouter.queryParams
       .subscribe(data => {
-        // this.temp = this.page == 1 ? 1 : 2;
-        // this.page = data.page;
+        this.temp = this.page == 1 ? 1 : 2;
+        this.page = data.page;
         // if (this.temp != data.page) {
         //   let type = this.temp == 1 ? 2 : 1;
         //   this.routeService.navigate(['/'], { queryParams: { page: type } });
         // }
-        this.temp = this.page;
+        // this.temp = this.page;
       })
   }
 
@@ -61,19 +61,6 @@ export class EditFilmComponent implements OnInit, OnDestroy {
     }
   }
 
-  createForm() {
-    this.frmFilm = this.formBuilder.group(                   // formBuilder is a service
-      {
-        name: [this.movie.name, [Validators.required]],
-        link: [this.movie.link, [Validators.required]],
-        author: [this.movie.author, [Validators.required]],
-      }
-    );
-    //     form = new FormGroup({
-    //       "firstName": new FormControl("", Validators.required),
-    //       "password": new FormControl("", Validators.required),
-    // });
-  }
   //get Movie By Id
   getMovie(_id: string) {
     this.moviesService.getMovieById(_id)
@@ -83,14 +70,20 @@ export class EditFilmComponent implements OnInit, OnDestroy {
         this.createForm();
       });
   }
-
-  //save film
-  save(name, link, author) {
-    let id = this.movie.id;
-    let _id = this.movie._id;
-    this.movie = new Movie(_id, id, name, link, author, true, false);
-    this.moviesService.ngSaveMovie(this.movie);
-    this.moviesService.ngLoadMovie();
+  
+  createForm() {
+    this.frmFilm = this.formBuilder.group(                 // formBuilder is a service, 
+      {
+        name: [this.movie.name, [Validators.required]],
+        link: [this.movie.link, [Validators.required]],
+        author: [this.movie.author, [Validators.required]],
+      }
+    );
+    //     frmFilm = new FormGroup({
+    //       "name": new FormControl("this.movie.name", Validators.required),
+    //       "link": new FormControl("this.movie.link", Validators.required),
+    //       "author": new FormControl("this.movie.author", Validators.required),
+    // });
   }
 
   onSubmitForm() {
@@ -100,7 +93,6 @@ export class EditFilmComponent implements OnInit, OnDestroy {
     let _id = this.movie._id;
     this.movie = new Movie(_id, id, movieInfo.name, movieInfo.link, movieInfo.author, true, false);
     this.moviesService.ngSaveMovie(this.movie);
-    this.moviesService.ngLoadMovie();
   }
   onReset() {
     this.frmFilm.reset();

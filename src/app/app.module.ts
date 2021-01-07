@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import {RouterModule, Routes} from '@angular/router';
 //service
 import {LogingService} from './services/loging.service';
@@ -55,12 +54,13 @@ const taskRoutes:Routes=[
     titleCase,
     ReactiveFormComponent,
     ErrorValidateComponent,
-    TemplateDrivenFormsComponent
+    TemplateDrivenFormsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    // HighLightDirective,
     HttpClientModule,
     AppRoutingModule,              
     RouterModule.forRoot(taskRoutes),

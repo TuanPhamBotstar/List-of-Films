@@ -1,13 +1,14 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 
 @Directive({
   selector: '[appHighLight]'
 })
 export class HighLightDirective {
 
-  constructor(Element:ElementRef) {
+  @Input('appHighLight') highLightColor:string;
+  constructor(element:ElementRef) {
     console.log(Element);
-    Element.nativeElement.style.backgroundColor ='yellow';
+    element.nativeElement.style.backgroundColor ='yellow';
    }
 
 }

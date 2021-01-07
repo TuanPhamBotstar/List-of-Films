@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store'
 import { Movie } from './../models/movie.class'
 
 // Section 2
-export const LOAD_MOVIE = '[MOVIE] Load Movies';
+export const LOAD_MOVIE = '[MOVIE] Load Movies';  //thu doi string giong nhau
 export const LOAD_MOVIE_SUCCESS = '[MOVIE] Load Movies Success';
 export const LOAD_MOVIE_FAILURE = '[MOVIE] Load Movies Failure';
 export const ADD_MOVIE = '[MOVIE] Add Movie';

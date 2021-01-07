@@ -13,7 +13,7 @@
           <form [formGroup]="frmFilm"
                 
                 novalidate="true"
-                (ngSubmit)="onSubmitForm(movies.length,name.value,link.value,author.value)"
+                (ngSubmit)="onSubmitForm(name.value,link.value,author.value)"
           >
                   <div class="form-group">
                       <label for="">Name Film</label>
@@ -25,7 +25,7 @@
                       > 
                       <span 
                         class="label label-danger"
-                        *ngIf="frmFilm.controls.name.dirty &&
+                        *ngIf="frmFilm.controls.name.touched &&
                         frmFilm.controls.name.errors?.required">
                         Film name is required !
                       </span>
@@ -40,7 +40,7 @@
                       > 
                       <span 
                         class="label label-danger"
-                        *ngIf="frmFilm.controls.link.dirty &&
+                        *ngIf="frmFilm.controls.link.touched &&
                         frmFilm.controls.link.errors?.required">
                         Link is required !
                       </span>
@@ -55,7 +55,7 @@
                     > 
                     <span 
                         class="label label-danger"
-                        *ngIf="frmFilm.controls.author.dirty &&
+                        *ngIf="frmFilm.controls.author.touched &&
                         frmFilm.controls.author.errors?.required">
                         Author is required !
                     </span>

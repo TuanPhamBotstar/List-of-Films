@@ -1,4 +1,4 @@
-import { Action } from '@ngrx/store'
+import { createSelector, createFeatureSelector  } from '@ngrx/store'
 import { Movie } from './../models/movie.class'
 import * as MovieActions from './../action/movies.actions'
 
@@ -38,10 +38,11 @@ export function reducer(state: MovieState = initialState, action: MovieActions.a
         case MovieActions.ADD_MOVIE:
             return {
                 ...state,
-                list: [...state.list, action.payload],
+                // list: [...state.list, action.payload],
                 loading: true
             };
         case MovieActions.ADD_MOVIE_SUCCESS:
+            console.log(action.payload)
             return {
                 ...state,
                 list: [...state.list, action.payload],
@@ -73,26 +74,24 @@ export function reducer(state: MovieState = initialState, action: MovieActions.a
                 loading: false
             }
         case MovieActions.SAVE_MOVIE:
+            return {
+                ...state,
+                loading: true,
+            }
+        case MovieActions.SAVE_MOVIE_SUCCESS:
             let newList = [...state.list]
             for (let i in newList) {
                 if (newList[i]._id === action.payload._id) {
-                    // newList.splice(+i, 1, action.payload)
-                    newList[i].name=action.payload.name
-                    newList[i].link=action.payload.link
-                    newList[i].author=action.payload.author
-
+                    newList.splice(+i, 1, action.payload)
+                    // newList[i].name=action.payload.name
+                    // newList[i].link=action.payload.link
+                    // newList[i].author=action.payload.author
                 }
             }
             console.log(newList)
             return {
                 ...state,
                 list: newList,
-                loading: true,
-            }
-        case MovieActions.SAVE_MOVIE_SUCCESS:
-            return {
-                ...state,
-                // list: newList,
                 loading: false
             }
         case MovieActions.SAVE_MOVIE_FAILURE:
@@ -108,3 +107,16 @@ export function reducer(state: MovieState = initialState, action: MovieActions.a
             return state;
     }
 }
+
+// Selectors
+// export const getMovieState = createFeatureSelector<MovieState>('movie');
+// export const getAllMoives = createSelector(
+//     getMovieState,
+//   (state: MovieState) => {
+//     console.log('state now: ', state);
+//     return state.list;
+//   }
+// );
+
+
+

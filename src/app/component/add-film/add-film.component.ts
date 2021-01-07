@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { resultMemoize, Store } from '@ngrx/store';
 import { AppState } from '../../state/moives.state';
 import * as Actions from '../../action/movies.actions';
-import { Observable} from 'rxjs/observable';
+import { Observable } from 'rxjs/observable';
 //reactive forms
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 @Component({
@@ -14,57 +14,48 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './add-film.component.html',
   styleUrls: ['./add-film.component.css']
 })
-export class AddFilmComponent implements OnInit{
-  public movies:Movie[];
-  public subscription:Subscription;
-  public frmFilm:FormGroup
+export class AddFilmComponent implements OnInit {
+  public movieQty: number = 5;
+  public movies: Movie[];
+  public subscription: Subscription;
+  public frmFilm: FormGroup
   //movies:Movie[];
   // @Input('isShowAddBox') isShowAddBox:boolean=false;
   // @Output() isHideAddBox = new EventEmitter<string>();
   constructor(
-    public add:LogingService,
-    private store:Store<AppState>,
-    private formBuilder:FormBuilder
-    ) {
-    store.select('movie').subscribe(res=>{
-      //this.movies=res;
-    });
-   }
+    public movieService: LogingService,
+    private store: Store<AppState>,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     this.createForm();
-    this.store.select('movie').subscribe(data=>this.movies=data['list']);
+    this.movieService.ngGetMovies().subscribe(data => this.movies = data['list']);
   }
-  
-  addFilm(id:number,name:string,link:string,author:string):void{
-    let movie =new Movie('',id,name,link,author,true,false);
-      console.log(movie);
-      this.store.dispatch(new Actions.AddMovie(movie));
-      this.store.dispatch(new Actions.LoadMovie());
-      console.log(this.movies);
-      this.onReset();
-  }   
 
-  createForm(){
-    this.frmFilm=this.formBuilder.group(
+  createForm() {
+    this.frmFilm = this.formBuilder.group(
       {
-        name:['',[Validators.required]],
-        link:['',[Validators.required]],
-        author:['',[Validators.required]],
+        name: ['', [Validators.required]],
+        link: ['', [Validators.required]], 
+        author: ['', [Validators.required]],
       }
     );
   }
-  onSubmitForm(id:number,name:string,link:string,author:string):void{
+  onSubmitForm(name: string, link: string, author: string): void {
+    let totalMovies = this.movies.length + 1;
+    let page = this.movies.length == 0 ? 1
+      : (totalMovies) % this.movieQty == 0 ? (totalMovies) / this.movieQty
+        : 1 + (totalMovies - totalMovies % this.movieQty) / this.movieQty;
     console.log(this.frmFilm);
-    let movie =new Movie('',id,name,link,author,true,false);
-      console.log(movie);
-      this.store.dispatch(new Actions.AddMovie(movie));
-      this.store.dispatch(new Actions.LoadMovie());
-      console.log(this.movies);
-      this.onReset();
-
+    let movie = new Movie('', page, name, link, author, true, false);
+    console.log(movie);
+    this.movieService.ngAddMovie(movie);
+    this.movieService.ngLoadMovie();
+    console.log(this.movies);
+    this.onReset();
   }
-  onReset(){
+  onReset() {
     this.frmFilm.reset();
   }
 
