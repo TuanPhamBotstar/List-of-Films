@@ -1,4 +1,4 @@
-import { createSelector, createFeatureSelector  } from '@ngrx/store'
+import { createSelector, createFeatureSelector } from '@ngrx/store'
 import { Movie } from './../models/movie.class'
 import * as MovieActions from './../action/movies.actions'
 
@@ -73,6 +73,7 @@ export function reducer(state: MovieState = initialState, action: MovieActions.a
                 error: action.payload,
                 loading: false
             }
+        // Update moive
         case MovieActions.SAVE_MOVIE:
             return {
                 ...state,
@@ -100,9 +101,23 @@ export function reducer(state: MovieState = initialState, action: MovieActions.a
                 loading: false,
                 error: action.payload
             }
-        // let delList=[...state];
-        // delList.splice(action.payload,1);
-        // return delList;
+        case MovieActions.LOAD_ONE_PAGE:
+            return {
+                ...state,
+                loading: true
+            }
+        case MovieActions.LOAD_ONE_PAGE_SUCCESS:
+            return {
+                ...state,
+                list: action.payload,
+                loading: false
+            }
+        case MovieActions.LOAD_ONE_PAGE_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
         default:
             return state;
     }

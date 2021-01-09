@@ -12,7 +12,9 @@ import { delay } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 const baseUrl = 'http://localhost:8081/api/film';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root'  
+  //Angular creates a single, shared instance of loogingService and injects it into any class that asks for it
+  //The service will be available application wide as a singleton with no need to add it to a module's providers array 
 })
 export class LogingService {
   public idx: number;
@@ -31,29 +33,19 @@ export class LogingService {
   }
   getMoviesFromServer(): Observable<{}> {
     return this.http.get(baseUrl)
-      .pipe(
-        delay(500)
-      )
   }
-
+  getOnePage(no:number):Observable<{}>{
+    return this.http.get(`${baseUrl}/${no}`)
+  }
   addMovie(movie: Movie): Observable<{}> {
-    return this.http.post(baseUrl, movie)
-      .pipe(
-        delay(500)
-      )
+    return this.http.post(baseUrl,movie )
   }
   delMovie(id: string): Observable<{}> {
     return this.http.delete(`${baseUrl}/${id}`)
-      .pipe(
-        delay(500)
-      )
   }
 
   saveMovie(id: string, movie: Movie): Observable<{}> {
     return this.http.put(`${baseUrl}/${id}`, movie)
-      .pipe(
-        delay(500)
-      )
   }
   getMovieById(id: string) {
     return this.http.get(`${baseUrl}/${id}`)
@@ -63,7 +55,7 @@ export class LogingService {
   }
   //------------
   ngAddMovie(movie: Movie) {
-    this.store.dispatch(new Actions.AddMovie(movie));
+    this.store.dispatch(new Actions.AddMovie(movie));//
   }
   ngSaveMovie(movie: Movie) {
     this.store.dispatch(new Actions.SaveMovie(movie));
@@ -71,10 +63,13 @@ export class LogingService {
   ngLoadMovie() {
     this.store.dispatch(new Actions.LoadMovie());
   }
+  ngLoadOnePage(no:number){
+    this.store.dispatch(new Actions.LoadOnePage(no));
+  }
   ngDelMovie(id: string) {
     this.store.dispatch(new Actions.RemoveMovie(id));
   }
-
+ 
   ngGetMovies(): Observable<Movie[]> {
     return this.store.select('movie');
   }

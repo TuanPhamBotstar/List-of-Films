@@ -32,9 +32,10 @@
                     </tr>
                 </thead>
                 <tbody *ngIf="movies">
+                    
                     <tr *ngFor="let movie of movies;let i=index;" >
-                        <!-- <ng-container *ngIf="i<5 && no == 1 && movie.show" else page2> -->
-                        <ng-container *ngIf="movie.page==no && movie.show" else page2>
+                        <!-- <ng-container *ngIf="movie.page==no && movie.show"> -->
+                            <ng-container *ngIf="i<5 && no == 1 && movie.show" else page2>
                             <td>{{i+1}}</td>
                             <td *ngIf="movie.hl; else hltxt" [innerHTML]="txthl"> </td>
                             <ng-template #hltxt>
@@ -46,14 +47,15 @@
                             <td>{{movie.author | titleCase}}</td>
                             <td [style.text-align]='"center"'>
                                 <a [routerLink]="['editFilm',movie._id]" [queryParams]="{page:no}">
-                                    <i class="fa fa-pencil" aria-hidden="true" [attr.key]=i></i>
+                                    <i class="fa fa-pencil" aria-hidden="true" ></i>
                                 </a>
                             </td>
                             <td [style.text-align]='"center"'>
                                 <i class="fa fa-trash-o" aria-hidden="true" (click)="delFilm(i)" [attr.key]=i></i> 
                             </td>
                         </ng-container> 
-                        <!-- <ng-container #page2 *ngIf="no==2 && i>4 && movie.show">
+
+                        <ng-container #page2 *ngIf="no==2 && i>4 && movie.show">
                             <td>{{i+1}}</td>
                             <td *ngIf="movie.hl; else hltxt" [innerHTML]="txthl"> </td>
                             <ng-template #hltxt>
@@ -71,7 +73,7 @@
                             <td [style.text-align]='"center"'>
                                 <i class="fa fa-trash-o" aria-hidden="true" (click)="delFilm(i)" [attr.key]=i></i> 
                             </td>
-                        </ng-container> -->
+                        </ng-container>
                     </tr>
                 </tbody>
             </table> 

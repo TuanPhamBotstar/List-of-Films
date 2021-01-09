@@ -27,6 +27,7 @@ export class FilmsComponent implements OnInit {
   no: number = 1;
   _id: string;
   page: number;
+  qtyOnePage:number = 5;
   constructor(
     private moviesService: LogingService,
     private store: Store<AppState>,
@@ -34,18 +35,33 @@ export class FilmsComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
   ) { }
   ngOnInit(): void {
+    // this.moviesService.getOnePage(1).subscribe(data => console.log(data))
+
+    // this.moviesService.ngLoadOnePage(this.no);
     
+    // this.moviesService.ngGetMovies()
+    //   .subscribe(data => this.movies = data['list']);
     this.moviesService.ngLoadMovie();
-    this.moviesService.ngGetMovies()
-      .subscribe(data => {
-        this.movies = data['list']
-        this.page = this.movies.length % 5 == 0 ? this.movies.length / 5 :
-          1 + (this.movies.length - this.movies.length % 5) / 5;
-      });
+   
     this.activatedRoute.queryParams
       .subscribe(data => { 
         console.log(data.page); 
         this.no = data.page ? data.page : this.no; console.log(this.no) 
+        //
+        this.moviesService.ngGetMovies()
+        .subscribe(data => {
+          console.log(this.no) 
+          if(this.no==1){
+            this.movies = data['list'].slice(0,this.qtyOnePage);
+          }
+          else{
+            this.movies = data['list'].slice((this.no-1)*this.qtyOnePage+1,(this.no-1)*this.qtyOnePage+6)
+          }
+          this.page = Math.ceil(data['list'].length/5);
+          console.log(this.page)
+          // this.page = this.movies.length % 5 == 0 ? this.movies.length / 5 :
+          //   1 + (this.movies.length - this.movies.length % 5) / 5;
+        });
       });
       
   }

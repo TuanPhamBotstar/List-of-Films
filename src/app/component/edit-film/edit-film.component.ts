@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/state/moives.state';
 import * as Actions from '../../action/movies.actions';
 //reactive forms
-import { FormGroup, FormBuilder, Validator, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Action } from 'rxjs/internal/scheduler/Action';
 //get id from URL
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,7 +15,8 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-edit-film',
   templateUrl: './edit-film.component.html',
-  styleUrls: ['./edit-film.component.css']
+  styleUrls: ['./edit-film.component.css'],
+  // providers:[FormBuilder]
 })
 export class EditFilmComponent implements OnInit, OnDestroy {
   public _id: string;
@@ -25,18 +26,20 @@ export class EditFilmComponent implements OnInit, OnDestroy {
   temp: number;
   public frmFilm: FormGroup;
   public subscription: Subscription;
+  public formBuilder: FormBuilder;
   // @Input('isShowEditBox') isShowEditBox:boolean=false;
   // @Output() isHideEditBox =new EventEmitter<boolean>();
   constructor(
     public moviesService: LogingService,
     private store: Store<AppState>,
-    private formBuilder: FormBuilder, 
+    // private formBuilder: FormBuilder, 
     public activateRouter: ActivatedRoute,
     public routeService: Router
   ) {
 
   }
   ngOnInit(): void {
+    this.formBuilder = new FormBuilder()
     this.subscription = this.activateRouter.params
       .subscribe(data => {
         this._id = data.id;
@@ -70,8 +73,9 @@ export class EditFilmComponent implements OnInit, OnDestroy {
         this.createForm();
       });
   }
-  
+
   createForm() {
+
     this.frmFilm = this.formBuilder.group(                 // formBuilder is a service, 
       {
         name: [this.movie.name, [Validators.required]],
@@ -79,36 +83,27 @@ export class EditFilmComponent implements OnInit, OnDestroy {
         author: [this.movie.author, [Validators.required]],
       }
     );
-    //     frmFilm = new FormGroup({
-    //       "name": new FormControl("this.movie.name", Validators.required),
-    //       "link": new FormControl("this.movie.link", Validators.required),
-    //       "author": new FormControl("this.movie.author", Validators.required),
-    // });
+    //   this.frmFilm = new FormGroup({
+    //     "name": new FormControl(this.movie.name, Validators.required),
+    //     "link": new FormControl(this.movie.link, Validators.required),
+    //     "author": new FormControl(this.movie.author, Validators.required),
+    //   });
+    //   this.frmFilm.controls.name.setValue('TEST')
+    console.log(this.frmFilm.controls);
+    this.frmFilm.valueChanges.subscribe(data => { console.log(data) });
   }
 
   onSubmitForm() {
     console.log(this.frmFilm.value);
+    console.log(this.frmFilm.controls);
     let movieInfo = this.frmFilm.value;
-    let id = this.movie.id;
+    let page = this.movie.page;
     let _id = this.movie._id;
-    this.movie = new Movie(_id, id, movieInfo.name, movieInfo.link, movieInfo.author, true, false);
+    this.movie = new Movie(_id, page, movieInfo.name, movieInfo.link, movieInfo.author, true, false);
     this.moviesService.ngSaveMovie(this.movie);
   }
   onReset() {
     this.frmFilm.reset();
   }
-  // passStatus(value:boolean){
-  //   this.isHideEditBox.emit(!value);
-  // }
-  // handlReq(page: number, id: string) {
-  //   let types: number;
-  //   // this.moviesService.handlReq(page, id).subscribe(type => {
-  //     types = type
-  //     if (types) {
-  //       this.routeService.navigate(['/'], { queryParams: { page: types } });
-  //     }
-  //   });
-  //   console.log(this.page)
 
-  // // }
 }
