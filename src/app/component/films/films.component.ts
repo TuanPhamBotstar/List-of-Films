@@ -27,7 +27,7 @@ export class FilmsComponent implements OnInit {
   no: number = 1;
   _id: string;
   page: number;
-  qtyOnePage:number = 5;
+  qtyOnePage: number = 5;
   constructor(
     private moviesService: LogingService,
     private store: Store<AppState>,
@@ -38,32 +38,33 @@ export class FilmsComponent implements OnInit {
     // this.moviesService.getOnePage(1).subscribe(data => console.log(data))
 
     // this.moviesService.ngLoadOnePage(this.no);
-    
+
     // this.moviesService.ngGetMovies()
     //   .subscribe(data => this.movies = data['list']);
-    this.moviesService.ngLoadMovie();
-   
-    this.activatedRoute.queryParams
-      .subscribe(data => { 
-        console.log(data.page); 
-        this.no = data.page ? data.page : this.no; console.log(this.no) 
-        //
-        this.moviesService.ngGetMovies()
-        .subscribe(data => {
-          console.log(this.no) 
-          if(this.no==1){
-            this.movies = data['list'].slice(0,this.qtyOnePage);
+    this.moviesService.ngLoadMovie(); // get movies from server to store
+    this.moviesService.ngGetMovies() // get movies from store to this.movies
+      .subscribe(data => {
+        console.log('this.no = ', this.no)
+        this.movies = data['list'];
+        this.movies.forEach((movie, index) => {
+          if (index == 0) {
+            movie.page = 1;
           }
-          else{
-            this.movies = data['list'].slice((this.no-1)*this.qtyOnePage+1,(this.no-1)*this.qtyOnePage+6)
+          else {
+            movie.page = Math.ceil((index + 1) / this.qtyOnePage);
           }
-          this.page = Math.ceil(data['list'].length/5);
-          console.log(this.page)
-          // this.page = this.movies.length % 5 == 0 ? this.movies.length / 5 :
-          //   1 + (this.movies.length - this.movies.length % 5) / 5;
-        });
+
+        })
+        this.page = Math.ceil(data['list'].length / this.qtyOnePage);
+        console.log('this.page ', this.page)
       });
-      
+
+    this.activatedRoute.queryParams
+      .subscribe(data => {
+        console.log(data.page);
+        this.no = data.page ? data.page : this.no; console.log(this.no);
+      });
+
   }
 
   //search and highlight match character
