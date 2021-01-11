@@ -5,11 +5,13 @@ import * as MovieActions from './../action/movies.actions'
 
 export interface MovieState {
     list: Movie[],
+    total: number,
     loading: boolean,
     error: Error
 }
 const initialState: MovieState = {
     list: [],
+    total: 0,
     loading: false,
     error: undefined
 }
@@ -23,9 +25,25 @@ export function reducer(state: MovieState = initialState, action: MovieActions.a
                 loading: true
             };
         case MovieActions.LOAD_MOVIE_SUCCESS:
+            // console.log(action.payload)
+            // let allMovies = action.payload
+            // let no = action.no
+            // let moviesOnePage = []
+            // // moviesOnePage.splice(0,5)
+            // console.log(allMovies)
+            // let idx = no == 1 ? 0 : (no - 1) * 5
+            // for (let i = 0; i < 5; i++) {
+            //     if (allMovies[idx]) {
+            //         moviesOnePage.push(allMovies[idx])
+            //     }
+            //     idx++
+            // }
+            // console.log(moviesOnePage)
+            console.log(action.payload.length);
             return {
                 ...state,
-                list: action.payload,
+                // list: action.payload,
+                total:action.payload.length,
                 loading: false
             }
         case MovieActions.LOAD_MOVIE_FAILURE:
@@ -58,10 +76,10 @@ export function reducer(state: MovieState = initialState, action: MovieActions.a
         case MovieActions.REMOVE_MOVIE:
             return {
                 ...state,
-                list: state.list.filter(item => item._id !== action.payload),
                 loading: true
             };
         case MovieActions.REMOVE_MOVIE_SUCCESS:
+            console.log(state.list)
             return {
                 ...state,
                 list: state.list.filter(item => item._id !== action.payload),
@@ -81,14 +99,15 @@ export function reducer(state: MovieState = initialState, action: MovieActions.a
             }
         case MovieActions.SAVE_MOVIE_SUCCESS:
             let newList = [...state.list]
+            console.log(action.payload)
             for (let i in newList) {
                 if (newList[i]._id === action.payload._id) {
                     newList.splice(+i, 1, action.payload)
-                    // newList[i].name=action.payload.name
-                    // newList[i].link=action.payload.link
-                    // newList[i].author=action.payload.author
+                    break
                 }
+
             }
+
             console.log(newList)
             return {
                 ...state,

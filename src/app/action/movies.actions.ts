@@ -24,12 +24,12 @@ export const LOAD_ONE_PAGE_FAILURE = '[MOVIE] Load One Page Failure';
 export class LoadMovie implements Action {
     readonly type = LOAD_MOVIE
 
-    //constructor(public payload:{}){}
+    // constructor(public no: number) { }
 }
 export class LoadMovieSuccess implements Action {
     readonly type = LOAD_MOVIE_SUCCESS;
 
-    constructor(public payload: {}) { }
+    constructor(public payload: any) { }
 }
 export class LoadMovieFailure implements Action {
     readonly type = LOAD_MOVIE_FAILURE
@@ -90,12 +90,12 @@ export class SaveMovieFailure implements Action {
 export class LoadOnePage implements Action {
     readonly type = LOAD_ONE_PAGE;
 
-    constructor(public payload:number){}
+    constructor(public no: any) { }
 }
 export class LoadOnePageSuccess implements Action {
     readonly type = LOAD_ONE_PAGE_SUCCESS
 
-    constructor(public payload: {}) { }
+    constructor(public payload: {}, public no: any) { }
 }
 export class LoadOnePageFailure implements Action {
     readonly type = LOAD_ONE_PAGE_FAILURE

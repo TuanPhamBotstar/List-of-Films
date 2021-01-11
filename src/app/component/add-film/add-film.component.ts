@@ -9,12 +9,15 @@ import * as Actions from '../../action/movies.actions';
 import { Observable } from 'rxjs/observable';
 //reactive forms
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+// URL
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-add-film',
   templateUrl: './add-film.component.html',
   styleUrls: ['./add-film.component.css']
 })
 export class AddFilmComponent implements OnInit {
+  no:number;
   public movieQty: number = 5;
   public movies: Movie[];
   public subscription: Subscription;
@@ -25,11 +28,14 @@ export class AddFilmComponent implements OnInit {
   constructor(
     public movieService: LogingService,
     private store: Store<AppState>,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private activaroute:ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
     this.createForm();
+    this.activaroute.queryParams.subscribe(data => this.no = data.page)
+    console.log(this.no)
     this.movieService.ngGetMovies().subscribe(data => this.movies = data['list']);
   }
 
@@ -48,9 +54,10 @@ export class AddFilmComponent implements OnInit {
       : (totalMovies) % this.movieQty == 0 ? (totalMovies) / this.movieQty
         : 1 + (totalMovies - totalMovies % this.movieQty) / this.movieQty;
     console.log(this.frmFilm);
-    let movie = new Movie('', page, name, link, author, true, false);
+    let movie = new Movie('', this.no, name, link, author, true, false);
     console.log(movie);
     this.movieService.ngAddMovie(movie);
+    this.movieService.ngLoadOnePage(this.no);
     this.movieService.ngLoadMovie();
     console.log(this.movies);
     this.onReset();

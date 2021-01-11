@@ -11,18 +11,18 @@ export class MovieEffects {
 
   @Effect() loadMovies$ = this.actions$.pipe(
     ofType(MovieActions.LOAD_MOVIE),
-    mergeMap(() => this.moviesService.getMoviesFromServer()
+    mergeMap((action:MovieActions.LoadMovie) => this.moviesService.getMoviesFromServer()
       .pipe(
-        map(data =>  new MovieActions.LoadMovieSuccess(data)),
+        map((data) =>  new MovieActions.LoadMovieSuccess(data)),
         catchError(error => of(new MovieActions.LoadMovieFailure(error)))
       ))
   );
 
   @Effect() loadOnePage$ = this.actions$.pipe(
     ofType(MovieActions.LOAD_ONE_PAGE),
-    mergeMap((action:MovieActions.LoadOnePage) => this.moviesService.getOnePage(action.payload)
+    mergeMap((action:MovieActions.LoadOnePage) => this.moviesService.getOnePage(action.no)
       .pipe(
-        map(data =>  new MovieActions.LoadOnePageSuccess(data)),
+        map(data =>  new MovieActions.LoadOnePageSuccess(data, action.no)),
         catchError(error => of(new MovieActions.LoadOnePageFailure(error)))
       ))
   );

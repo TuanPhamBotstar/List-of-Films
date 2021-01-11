@@ -11,7 +11,7 @@
                         (input)="search(nameSearch)">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </div>
-                    <a [routerLink]="['/addFilm']">
+                    <a [routerLink]="['/addFilm']" [queryParams]="{page:no}">
                         <button type="button" class="btn btn-success">
                          Add Film
                         </button>
@@ -34,7 +34,7 @@
                 <tbody *ngIf="movies">
                     
                     <tr *ngFor="let movie of movies;let i=index;" >
-                        <ng-container *ngIf="movie.hl;else showHl">
+                        <ng-container *ngIf="movie.hl;" else showHl>
                             <td>{{i+1}}</td>
                             <td  [innerHTML]="txthl"> </td>
                             <td><a [href]='movie.link' target="_blank">{{movie.link | titleCase}}</a></td>

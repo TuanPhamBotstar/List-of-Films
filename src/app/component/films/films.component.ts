@@ -35,27 +35,29 @@ export class FilmsComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
   ) { }
   ngOnInit(): void {
-    // this.moviesService.getOnePage(1).subscribe(data => console.log(data))
-
-    // this.moviesService.ngLoadOnePage(this.no);
-
-    // this.moviesService.ngGetMovies()
-    //   .subscribe(data => this.movies = data['list']);
-    this.moviesService.ngLoadMovie(); // get movies from server to store
+    // this.moviesService.getOnePage(this.no).subscribe(data => console.log(data))
+    this.moviesService.getMovieById('5ffbdbc3d974b525f090dffc')
+      .subscribe(data => {
+        console.log(data);
+      });
+    this.moviesService.ngLoadOnePage(this.no);
+    this.moviesService.ngLoadMovie();// get movies from server to store
     this.moviesService.ngGetMovies() // get movies from store to this.movies
       .subscribe(data => {
         console.log('this.no = ', this.no)
+        console.log(data);
         this.movies = data['list'];
-        this.movies.forEach((movie, index) => {
-          if (index == 0) {
-            movie.page = 1;
-          }
-          else {
-            movie.page = Math.ceil((index + 1) / this.qtyOnePage);
-          }
-
+        console.log(this.movies);
+        this.movies.forEach((movie, index) => { 
+          // if (index == 0) {
+          //   movie.page = 1;
+          // }
+          // else {
+          //   movie.page = Math.ceil((index + 1) / this.qtyOnePage);
+          // }
+          movie.page=this.no;
         })
-        this.page = Math.ceil(data['list'].length / this.qtyOnePage);
+        this.page = Math.ceil(data['total'] / this.qtyOnePage);
         console.log('this.page ', this.page)
       });
 
@@ -95,8 +97,8 @@ export class FilmsComponent implements OnInit {
 
   delFilm(index: number) {
     let id = this.movies[index]._id;
-    // this.store.dispatch(new Actions.RemoveMovie(id));
     this.moviesService.ngDelMovie(id);
+    this.moviesService.ngLoadMovie(); 
     console.log(this.movies)
   }
 
@@ -105,17 +107,20 @@ export class FilmsComponent implements OnInit {
       this.no--;
     }
     this.routerService.navigate(['/'], { queryParams: { page: this.no } });
+    this.moviesService.ngLoadOnePage(this.no);
   }
   forward() {
     if (this.no < this.page) {
       this.no++;
       console.log(`no: ${this.no}`)
+      this.moviesService.ngLoadOnePage(this.no);
     }
     this.routerService.navigate(['/'], { queryParams: { page: this.no } });
   }
   goTo(i: number) {
     this.no = i + 1;
     this.routerService.navigate(['/'], { queryParams: { page: this.no } });
+    this.moviesService.ngLoadOnePage(this.no);
   }
   arrayV() {
     return Array(this.page);

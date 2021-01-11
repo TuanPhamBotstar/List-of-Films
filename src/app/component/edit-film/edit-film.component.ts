@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+  import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LogingService } from './../../services/loging.service';
 import { Movie } from './../../models/movie.class';
 import { Subscriber } from 'rxjs/Subscriber';
@@ -39,7 +39,11 @@ export class EditFilmComponent implements OnInit, OnDestroy {
 
   }
   ngOnInit(): void {
-    this.formBuilder = new FormBuilder()
+    this.formBuilder = new FormBuilder();
+    this.moviesService.getMovieById('5ffbdbc3d974b525f090dffc')
+      .subscribe(data => {
+        console.log(data);
+      });
     this.subscription = this.activateRouter.params
       .subscribe(data => {
         this._id = data.id;
